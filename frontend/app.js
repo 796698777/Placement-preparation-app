@@ -97,16 +97,9 @@ function handleDashboardClick() {
         window.location.href = 'login.html';
         return;
     }
-
-    if (!loginDetails) return;
-    loginDetails.style.display = 'flex';
-    loginDetails.innerHTML = `
-        <div>
-            <strong>Logged in as:</strong> ${userEmail}<br>
-            <small>Welcome back! Your dashboard is showing live backend data.</small>
-        </div>
-        <button type="button" onclick="logoutUser()">Logout</button>
-    `;
+    
+    // User is authenticated, just refresh or stay on dashboard
+    return;
 }
 
 function logoutUser() {
