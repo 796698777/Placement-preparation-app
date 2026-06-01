@@ -109,8 +109,8 @@ nav {
 
 /* Hero Section */
 .hero {
-    margin-top: 150px;
-    padding: 3rem 5% 2rem 5%;
+    margin-top: 180px;
+    padding: 4rem 5% 2rem 5%;
     text-align: center;
     animation: fadeInDown 1s ease forwards;
 }
