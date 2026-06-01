@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Tests - Placement Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+        .subject-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.8rem;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            backdrop-filter: blur(12px);
+        }
+        .subject-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.12);
+        }
+        .subject-card i {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+        }
+        .subject-card h3 {
+            font-size: 1.35rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+        .subject-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        .subject-card small {
+            display: inline-block;
+            margin-top: auto;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+        .question-section {
+            margin-top: 3rem;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .question-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--text-main);
+        }
+        .question-header button {
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-main);
+            border: none;
+            border-radius: 10px;
+            padding: 0.9rem 1.3rem;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(96,165,250,0.08);
+        }
+        .question-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+            backdrop-filter: blur(12px);
+        }
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(96, 165, 250, 0.1);
+        }
+        .question-card h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+        .question-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+        .breadcrumb {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb span {
+            color: var(--accent-primary);
+            cursor: pointer;
+        }
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-controls button {
+            background: linear-gradient(45deg, #f9a8d4, #60a5fa);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            padding: 0.9rem 1.3rem;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .quiz-status {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .quiz-status span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .quiz-status .timer {
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+        .explanation {
+            margin-top: 1rem;
+            background: var(--panel-bg);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1rem;
+            border-radius: 0 0 14px 14px;
+            display: none;
+            color: var(--text-main);
+            line-height: 1.7;
+            border: 1px solid var(--border);
+        }
+        .explain-btn {
+            margin-top: 1rem;
+            background: transparent;
+            color: var(--accent-secondary);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            padding: 0.65rem 0.95rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .option-list {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+        .option-item button {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--input-bg, #eff6ff);
+            color: var(--text-main);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+        .option-item button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(96, 165, 250, 0.9);
+            background: rgba(219,234,254,0.8);
+        }
+        .option-item button.correct {
+            background: #d1fae5;
+            border-color: #34d399;
+            color: #064e3b;
+        }
+        .option-item button.wrong {
+            background: #fecaca;
+            border-color: #f87171;
+            color: #991b1b;
+        }
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(12px);
+        }
+        .result-card h3 {
+            margin-top: 0;
+            color: var(--accent-primary);
+        }
+        .result-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .result-answer {
+            margin-top: 0.8rem;
+            padding: 0.9rem 1rem;
+            background: var(--panel-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .result-answer.correct {
+            border-color: #34d399;
+            background: #d1fae5;
+        }
+        .result-answer.wrong {
+            border-color: #f87171;
+            background: #fecaca;
+        }
+        .leaderboard-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 18px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+        }
+        .leaderboard-section h3 {
+            margin-top: 0;
+            color: var(--accent-primary);
+        }
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.95rem 1rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+            color: var(--text-main);
+        }
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        .leaderboard-item span {
+            color: var(--text-muted);
+        }
+        .leaderboard-empty {
+            color: var(--text-muted);
+            padding: 1rem 0;
+        }
+        .explain-btn:hover {
+            background: rgba(56, 189, 248, 0.08);
+            color: var(--text-main);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+        @media (max-width: 768px) {
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i> PlacementPrep
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="mocktest.html" class="active">Mock Tests</a></li>
+            <li id="authNavItem"><a href="login.html">Login</a></li>
+        </ul>
+        <div class="profile" id="profileContainer">
+            <button id="profileBtn" class="profile-btn" title="Profile"><i class="fa-solid fa-user-circle"></i></button>
+            <div id="profileMenu" class="profile-menu" aria-hidden="true">
+                <div class="profile-info">Signed in as<br><strong id="profileEmail">Guest</strong></div>
+                <div class="profile-actions">
+                    <a href="index.html">Dashboard</a>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Mock Test Workspace</h1>
+        <p>Choose a subject and launch a set of practice questions to sharpen your placement preparation.</p>
+    </section>
+
+    <main class="container">
+        <div id="subjectsContainer" class="subject-grid"></div>
+
+        <section id="questionSection" class="question-section" style="display:none;">
+            <div class="question-header">
+                <div>
+                    <h2 id="subjectTitle">Subject Title</h2>
+                    <div class="breadcrumb">Subjects <span onclick="showSubjectList()">→ Choose another subject</span></div>
+                </div>
+                <button type="button" onclick="showSubjectList()">Back to Subjects</button>
+            </div>
+            <div id="quizControls" class="quiz-controls">
+                <div id="quizInfo" class="quiz-status" style="display:none;">
+                    <span><i class="fa-solid fa-list-check"></i> <strong id="questionCount">0</strong> questions</span>
+                    <span><i class="fa-solid fa-hourglass-half"></i> <strong class="timer" id="timerDisplay">15:00</strong></span>
+                </div>
+                <button id="startQuizBtn" type="button" onclick="startQuiz()">Start Quiz</button>
+                <button id="submitQuizBtn" type="button" onclick="submitQuiz()" style="display:none;">Submit Quiz</button>
+            </div>
+            <div id="questionList" style="display:none;"></div>
+            <div id="resultSummary" style="display:none;"></div>
+        </section>
+        <section id="leaderboardSection" class="leaderboard-section"></section>
+        <div id="emptyState" class="empty-state" style="display:none;"></div>
+    </main>
+
+    <script>
+        const subjects = [
+            {
+                id: 'dsa',
+                title: 'DSA',
+                shortDesc: 'Data structures and algorithm practice questions for coding rounds.',
+                count: 25,
+                iconClass: 'fa-solid fa-code'
+            },
+            {
+                id: 'full-stack',
+                title: 'Full Stack',
+                shortDesc: 'Front-end and back-end interview problems covering real application flow.',
+                count: 20,
+                iconClass: 'fa-solid fa-laptop-code'
+            },
+            {
+                id: 'system-design',
+                title: 'System Design',
+                shortDesc: 'Learn system architecture, scalability and design interview questions.',
+                count: 18,
+                iconClass: 'fa-solid fa-network-wired'
+            },
+            {
+                id: 'aptitude',
+                title: 'Aptitude',
+                shortDesc: 'Quantitative reasoning and logical puzzle questions for screening rounds.',
+                count: 20,
+                iconClass: 'fa-solid fa-brain'
+            }
+        ];
+
+        // Profile setup (shared)
+        function setupProfileMenu() {
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const profileEmail = document.getElementById('profileEmail');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+            const email = localStorage.getItem('userEmail') || 'Guest';
+
+            if (profileEmail) profileEmail.textContent = email;
+            if (!isAuth && profileBtn) profileBtn.style.display = 'none';
+
+            profileBtn?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = profileMenu.classList.toggle('open');
+                profileMenu.setAttribute('aria-hidden', !open);
+            });
+
+            document.addEventListener('click', () => profileMenu?.classList.remove('open'));
+
+            logoutBtn?.addEventListener('click', () => {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'login.html';
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', setupProfileMenu);
+
+        const questionBank = {
+            'dsa': [
+                {
+                    question: 'Two Sum: Given an array of integers and a target, return indices of the two numbers that add up to the target.',
+                    options: ['Return all pairs that sum to target', 'Return any one valid pair', 'Return the smallest and largest indices', 'Return the values of the two numbers'],
+                    answer: 1,
+                    explanation: 'The standard Two Sum solution returns one valid pair of indices whose values add up to target using a hash map.'
+                },
+                {
+                    question: 'Reverse Linked List: Reverse a singly linked list and return the head of the reversed list.',
+                    options: ['Swap value data in nodes', 'Reverse pointers iteratively', 'Use a stack to rebuild the list', 'Clone the list in reverse order'],
+                    answer: 1,
+                    explanation: 'The most efficient reverse list solution reverses pointers in-place by tracking previous and current nodes.'
+                },
+                {
+                    question: 'Longest Substring Without Repeating Characters: Find the length of the longest substring without repeating characters.',
+                    options: ['Use sliding window with a set', 'Sort the string and scan neighbors', 'Use recursion over all substrings', 'Use a stack for characters'],
+                    answer: 0,
+                    explanation: 'A sliding window with a set or map is the optimal method to maintain a non-repeating window.'
+                },
+                {
+                    question: 'Valid Parentheses: Determine if a string of parentheses is valid.',
+                    options: ['Use a stack to match pairs', 'Count opening and closing brackets', 'Sort characters and compare', 'Use regex matching only'],
+                    answer: 0,
+                    explanation: 'A stack checks that each closing parenthesis matches the most recent unmatched opening one.'
+                },
+                {
+                    question: 'Merge Two Sorted Lists: Merge two sorted linked lists and return it as a new sorted list.',
+                    options: ['Concatenate and sort lists', 'Use two pointers to merge nodes', 'Use recursion on values only', 'Convert to arrays then merge'],
+                    answer: 1,
+                    explanation: 'Merging ordered lists with two pointers is the correct in-place approach.'
+                },
+                {
+                    question: 'Linked List Cycle: Detect whether a linked list has a cycle.',
+                    options: ['Use hashing of visited nodes', 'Use fast and slow pointers', 'Count nodes and compare lengths', 'Use recursion to traverse'],
+                    answer: 1,
+                    explanation: 'Fast and slow pointers detect a cycle with O(1) space.'
+                },
+                {
+                    question: 'Maximum Subarray: Find the contiguous subarray with the largest sum.',
+                    options: ['Use prefix sums and nested loops', 'Use Kadaneâ€™s algorithm', 'Sort the array first', 'Use divide and conquer only'],
+                    answer: 1,
+                    explanation: 'Kadaneâ€™s algorithm keeps a running max subarray sum in linear time.'
+                },
+                {
+                    question: 'Climbing Stairs: Count ways to reach the top of n stairs given 1 or 2 steps.',
+                    options: ['Use combinations formula', 'Use DP with dp[i]=dp[i-1]+dp[i-2]', 'Use BFS traversal', 'Use greedy jumps'],
+                    answer: 1,
+                    explanation: 'This problem is equivalent to Fibonacci, so DP is the right approach.'
+                },
+                {
+                    question: 'Best Time to Buy and Sell Stock: Maximize profit from a single transaction.',
+                    options: ['Track min price and max profit', 'Use two nested loops', 'Sort prices and compare', 'Use sliding window of fixed size'],
+                    answer: 0,
+                    explanation: 'Keep the lowest price seen so far and compute profit with current price.'
+                },
+                {
+                    question: 'Binary Tree Inorder Traversal: Return inorder traversal of a binary tree.',
+                    options: ['Use recursion or a stack', 'Use level-order traversal', 'Traverse each node twice', 'Use the treeâ€™s height only'],
+                    answer: 0,
+                    explanation: 'Inorder traversal is left-root-right and can be implemented recursively or iteratively with a stack.'
+                },
+                {
+                    question: 'Symmetric Tree: Check whether a tree is symmetric around its center.',
+                    options: ['Compare left and right subtrees recursively', 'Check only root children', 'Use inorder traversal values', 'Compare leaf nodes only'],
+                    answer: 0,
+                    explanation: 'Symmetry requires paired mirror comparisons across left and right subtrees.'
+                },
+                {
+                    question: 'Maximum Depth of Binary Tree: Find the maximum depth of a binary tree.',
+                    options: ['Use recursion to compute subtree depth', 'Use level-order traversal only', 'Count total nodes', 'Use a stack for leaf nodes'],
+                    answer: 0,
+                    explanation: 'Recursively compute the greater depth between left and right subtrees.'
+                },
+                {
+                    question: 'Pascalâ€™s Triangle: Generate Pascalâ€™s triangle up to a given number of rows.',
+                    options: ['Build each row from previous row', 'Print only the first row', 'Use a formula without loops', 'Use binary search'],
+                    answer: 0,
+                    explanation: 'Each element equals the sum of two elements directly above it from the prior row.'
+                },
+                {
+                    question: 'Convert Sorted Array to Binary Search Tree: Build a height-balanced BST from sorted array.',
+                    options: ['Use middle element as root recursively', 'Insert elements sequentially', 'Use a min-heap', 'Use breadth-first insertion'],
+                    answer: 0,
+                    explanation: 'Choosing the middle element for root produces a balanced BST.'
+                },
+                {
+                    question: 'Search Insert Position: Find the index where a target should be inserted in a sorted array.',
+                    options: ['Use linear scan', 'Use binary search', 'Sort then search', 'Return array length always'],
+                    answer: 1,
+                    explanation: 'Binary search gives the correct insertion index efficiently.'
+                },
+                {
+                    question: 'Product of Array Except Self: Return an array of products without using division.',
+                    options: ['Use prefix and suffix products', 'Use nested loops', 'Use multiplication by zero', 'Sort the array'],
+                    answer: 0,
+                    explanation: 'Combine left-product and right-product arrays for each index.'
+                },
+                {
+                    question: 'Find Minimum in Rotated Sorted Array: Locate the minimum in a rotated sorted array.',
+                    options: ['Use modified binary search', 'Find min by scanning whole array', 'Sort and take first', 'Use stack-based search'],
+                    answer: 0,
+                    explanation: 'A modified binary search identifies the rotation pivot and minimum.'
+                },
+                {
+                    question: '3Sum: Find triplets that sum to zero in an integer array.',
+                    options: ['Sort array and use two pointers', 'Use three nested loops only', 'Use hashmap for every pair', 'Use recursion without sorting'],
+                    answer: 0,
+                    explanation: 'Sorting and two pointers produce O(n^2) performance and avoid duplicates.'
+                },
+                {
+                    question: 'Group Anagrams: Group strings that are anagrams of each other.',
+                    options: ['Use sorted string signature as key', 'Compare each pair directly', 'Use a trie', 'Sort by length only'],
+                    answer: 0,
+                    explanation: 'Anagram grouping is easiest by using a canonical sorted string as the hash key.'
+                },
+                {
+                    question: 'Top K Frequent Elements: Return the k most frequent elements from an array.',
+                    options: ['Use frequency map and bucket sort', 'Sort and take first k values', 'Use a sliding window', 'Use recursion'],
+                    answer: 0,
+                    explanation: 'A frequency map plus bucket or heap selection is the canonical solution.'
+                },
+                {
+                    question: 'Valid Sudoku: Determine if a 9x9 Sudoku board is valid.',
+                    options: ['Check rows, columns, and sub-boxes with sets', 'Check only rows', 'Check only first row', 'Use DFS traversal'],
+                    answer: 0,
+                    explanation: 'A valid Sudoku must satisfy all row, column, and 3x3 sub-box constraints.'
+                },
+                {
+                    question: 'Word Search: Find if a word exists in a 2D grid of characters.',
+                    options: ['Use DFS backtracking from each cell', 'Use BFS only', 'Sort rows first', 'Use dynamic programming'],
+                    answer: 0,
+                    explanation: 'DFS backtracking is the standard method to explore neighboring cells.'
+                },
+                {
+                    question: 'Number of Islands: Count islands in a 2D grid of water and land.',
+                    options: ['Use DFS or BFS flood fill', 'Use union-find only', 'Count all land cells', 'Use sorting'],
+                    answer: 0,
+                    explanation: 'Flood fill from each unvisited land cell counts islands reliably.'
+                },
+                {
+                    question: 'Course Schedule: Determine if you can finish all courses given prerequisites.',
+                    options: ['Detect cycle in directed graph', 'Sort prerequisites alphabetically', 'Use greedy scheduling', 'Use linear scanning'],
+                    answer: 0,
+                    explanation: 'Course scheduling reduces to cycle detection in a directed graph.'
+                },
+                {
+                    question: 'Minimum Path Sum: Find minimum sum path from top-left to bottom-right in a grid.',
+                    options: ['Use dynamic programming on the grid', 'Use DFS without memoization', 'Use Dijkstraâ€™s algorithm only', 'Use BFS on weights'],
+                    answer: 0,
+                    explanation: 'DP computes the best sum for each cell using its top and left neighbors.'
+                }
+            ],
+            'full-stack': [
+                {
+                    question: 'Explain the lifecycle of a single HTTP request in a full-stack web app.',
+                    options: ['Client sends request, server processes, database responds, server returns response', 'Server pushes updates to client without a request', 'Client renders UI before request reaches server', 'Database sends requests to server and waits for client confirmation'],
+                    answer: 0,
+                    explanation: 'A typical HTTP lifecycle is request from client, server processing, database access if needed, and response back to the client.'
+                },
+                {
+                    question: 'How do you architect a RESTful API for a task management system?',
+                    options: ['Use nouns for resources and HTTP verbs for actions', 'Use verbs in endpoint names and always POST for every action', 'Respond with HTML from API routes', 'Mix CRUD operations inside one endpoint with query parameters'],
+                    answer: 0,
+                    explanation: 'RESTful APIs should model resources as nouns and use HTTP methods to express actions like GET, POST, PUT, DELETE.'
+                },
+                {
+                    question: 'Describe how you would implement authentication and authorization for a modern web app.',
+                    options: ['Use JWT for auth tokens and roles/permissions for authorization', 'Store passwords in plain text and allow all users access by default', 'Send user credentials in query strings', 'Use only client-side checks without validating on server'],
+                    answer: 0,
+                    explanation: 'Secure auth uses hashed passwords, session or token-based authentication, and server-side authorization checks.'
+                },
+                {
+                    question: 'What is CORS and how do you configure it safely?',
+                    options: ['CORS controls cross-origin requests and should allow only trusted origins', 'CORS is a database feature for caching', 'CORS disables HTTPS security', 'CORS is needed only for same-origin requests'],
+                    answer: 0,
+                    explanation: 'Cross-Origin Resource Sharing restricts browser access to resources and should be configured to allow only trusted domains.'
+                },
+                {
+                    question: 'How would you connect a React front end to a Node.js/Express backend?',
+                    options: ['Use fetch or axios to call backend API endpoints and handle JSON responses', 'Embed server code directly inside React components', 'Use FTP to transfer data between front end and backend', 'Render React components on the server only'],
+                    answer: 0,
+                    explanation: 'React apps typically call backend endpoints via HTTP requests and update UI state with the JSON response.'
+                },
+                {
+                    question: 'Explain the difference between client-side routing and server-side routing.',
+                    options: ['Client-side routing updates the UI in-browser, server-side routing requests HTML from the server', 'Client-side routing is always faster and never uses the network', 'Server-side routing only applies to mobile apps', 'Client-side routing means bypassing the browser address bar'],
+                    answer: 0,
+                    explanation: 'Client-side routing manipulates history and renders views in the browser, while server-side routing loads a new page from the server.'
+                },
+                {
+                    question: 'How do you handle form validation both on client and server? Give examples.',
+                    options: ['Validate on the client for UX and on the server for security', 'Only validate on the front end and skip server checks', 'Use cookies to validate forms automatically', 'Let the browser save invalid input without warning'],
+                    answer: 0,
+                    explanation: 'Client-side validation improves UX, while server-side validation is required to enforce rules reliably.'
+                },
+                {
+                    question: 'What is debounce and why is it useful in front-end search inputs?',
+                    options: ['It delays action until input stops changing to reduce repeated calls', 'It makes input fields accept only numbers', 'It permanently disables a button after one click', 'It caches server responses locally'],
+                    answer: 0,
+                    explanation: 'Debouncing reduces repeated events by waiting until typing stops before executing the search request.'
+                },
+                {
+                    question: 'Describe a strategy to deploy a full-stack app using CI/CD.',
+                    options: ['Use a pipeline that builds, tests, and deploys automatically on each commit', 'Deploy manually from local machine each time without testing', 'Use CI/CD only for front-end code', 'Push secrets into public repos for faster deployment'],
+                    answer: 0,
+                    explanation: 'A CI/CD pipeline automates build, test, and deployment steps to ensure reliable and repeatable releases.'
+                },
+                {
+                    question: 'How do you design a database schema for an e-commerce cart system?',
+                    options: ['Use tables for users, products, carts, and cart items with proper relationships', 'Store the entire cart as a single JSON string without normalization', 'Use only one table for everything', 'Avoid indexing to keep writes fast'],
+                    answer: 0,
+                    explanation: 'E-commerce schemas typically normalize entities like users, products, carts, and line items for integrity and query efficiency.'
+                }
+            ],
+            'system-design': [
+                {
+                    question: 'Design a URL shortening service like bit.ly.',
+                    options: ['Use a database for URL mapping and generate short keys', 'Store every URL in a single file', 'Use long URLs only and avoid shortening', 'Send URLs through email to shorten them'],
+                    answer: 0,
+                    explanation: 'URL shorteners map short keys to original URLs and use a database or cache for fast lookup.'
+                },
+                {
+                    question: 'How would you design a scalable chat application?',
+                    options: ['Use pub/sub messaging, horizontal servers, and persistent storage', 'Store all messages on one server only', 'Use polling every second instead of sockets', 'Allow only one user to chat at a time'],
+                    answer: 0,
+                    explanation: 'Real-time chat requires messaging infrastructure, scalable servers, and storage for history.'
+                },
+                {
+                    question: 'Design a social media timeline service.',
+                    options: ['Use feed generation, caching, and fan-out strategies for performance', 'Render each post from scratch on every request', 'Use one database query for every follower', 'Avoid indexing to save disk space'],
+                    answer: 0,
+                    explanation: 'Timeline services often precompute feeds, cache hot content, and use efficient fan-out approaches.'
+                },
+                {
+                    question: 'How do you design a load-balanced file upload system?',
+                    options: ['Use a load balancer, upload servers, and direct cloud storage', 'Upload files only to the client browser memory', 'Send files directly through email', 'Store uploads in cookies'],
+                    answer: 0,
+                    explanation: 'A scalable upload system separates traffic with load balancing and stores files in cloud storage or blob stores.'
+                },
+                {
+                    question: 'Design a web crawler and indexing pipeline.',
+                    options: ['Use distributed crawlers, parsers, and an indexing service', 'Crawl one page per day only', 'Index pages on the client device', 'Use manual entry for every web page'],
+                    answer: 0,
+                    explanation: 'Crawler pipelines fetch pages, extract content, and build searchable indexes in stages.'
+                },
+                {
+                    question: 'How would you architect a notification delivery service?',
+                    options: ['Queue notifications and retry failed deliveries with backoff', 'Send notifications directly from the database without a queue', 'Use one thread for all users', 'Deliver notifications only when users request them manually'],
+                    answer: 0,
+                    explanation: 'Reliable notification systems queue messages and manage delivery retries and throttling.'
+                },
+                {
+                    question: 'Explain how you would scale a relational database for high read traffic.',
+                    options: ['Use read replicas, caching, and proper indexing', 'Disable indexing to improve writes', 'Use only one master for both reads and writes', 'Store all data in memory without persistence'],
+                    answer: 0,
+                    explanation: 'Read-heavy loads are handled by replicas, caches, and efficient query design.'
+                },
+                {
+                    question: 'Design a rate limiter for API requests.',
+                    options: ['Use token buckets or fixed windows and enforce limits per client', 'Allow unlimited requests and rely on hardware', 'Rate limit only error responses', 'Use client-side code for rate limiting solely'],
+                    answer: 0,
+                    explanation: 'API rate limiting is best enforced server-side using algorithms like token bucket or sliding window.'
+                },
+                {
+                    question: 'How would you design a real-time collaboration tool?',
+                    options: ['Use operational transforms or CRDTs and sync changes in real time', 'Save edits only when the user closes the page', 'Allow only one person to edit at a time', 'Use email to share updated content'],
+                    answer: 0,
+                    explanation: 'Real-time collaboration relies on mergeable change models and live synchronization between peers.'
+                },
+                {
+                    question: 'Design a metrics collection and dashboard system.',
+                    options: ['Collect events, aggregate them, and use dashboards for visualization', 'Store metrics in plain text logs only', 'Update dashboards once a month manually', 'Skip alerts and only save raw data'],
+                    answer: 0,
+                    explanation: 'A metrics system ingests telemetry, aggregates it efficiently, and exposes it via dashboards and alerts.'
+                }
+            ],
+            'aptitude': [
+                {
+                    question: 'If A can do a job in 12 days and B in 18 days, how much work do they do together in 3 days?',
+                    options: ['5/12 of the job', '1/6 of the job', '1/4 of the job', '3/12 of the job'],
+                    answer: 0,
+                    explanation: 'A does 1/12, B does 1/18, combined 5/36 per day, so in 3 days they do 5/12.'
+                },
+                {
+                    question: 'What is the next number in the sequence 2, 6, 12, 20, ...?',
+                    options: ['30', '28', '26', '24'],
+                    answer: 0,
+                    explanation: 'The sequence adds consecutive even numbers: +4, +6, +8, so next is 20+10 = 30.'
+                },
+                {
+                    question: 'Solve the ratio problem: 5:8 = x:32. What is x?',
+                    options: ['20', '18', '12', '16'],
+                    answer: 0,
+                    explanation: 'Solve 5/8 = x/32, so x = 32 * 5 / 8 = 20.'
+                },
+                {
+                    question: 'A train travels 120 km in 1.5 hours. What is its average speed?',
+                    options: ['80 km/h', '70 km/h', '60 km/h', '90 km/h'],
+                    answer: 0,
+                    explanation: 'Speed = distance / time = 120 / 1.5 = 80 km/h.'
+                },
+                {
+                    question: 'If the probability of rain is 0.3, what is the probability that it does not rain?',
+                    options: ['0.7', '0.3', '0.5', '0.4'],
+                    answer: 0,
+                    explanation: 'The complement probability is 1 - 0.3 = 0.7.'
+                },
+                {
+                    question: 'What is the simple interest on ₹5000 at 8% per annum for 3 years?',
+                    options: ['₹1200', '₹1000', '₹1500', '₹800'],
+                    answer: 0,
+                    explanation: 'Simple interest = P * R * T / 100 = 5000 * 8 * 3 / 100 = ₹1200.'
+                },
+                {
+                    question: 'How many diagonals are there in a polygon with 12 sides?',
+                    options: ['54', '42', '66', '36'],
+                    answer: 0,
+                    explanation: 'Number of diagonals = n(n-3)/2 = 12*9/2 = 54.'
+                },
+                {
+                    question: 'If x + y = 10 and x - y = 4, find x and y.',
+                    options: ['x = 7, y = 3', 'x = 6, y = 4', 'x = 8, y = 2', 'x = 5, y = 5'],
+                    answer: 0,
+                    explanation: 'Adding the equations gives 2x=14, so x=7 and y=3.'
+                },
+                {
+                    question: 'A jar contains 5 red and 7 blue marbles. What is the chance of drawing a red marble?',
+                    options: ['5/12', '7/12', '1/2', '5/7'],
+                    answer: 0,
+                    explanation: 'Probability is red marbles divided by total marbles: 5/(5+7)=5/12.'
+                },
+                {
+                    question: 'What is the compound interest on ₹1000 at 10% annual interest for 2 years?',
+                    options: ['₹210', '₹200', '₹220', '₹100'],
+                    answer: 0,
+                    explanation: 'Compound amount = 1000*(1.1^2) = 1210, so interest = 1210 - 1000 = ₹210.'
+                }
+            ]
+        };
+
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const questionSection = document.getElementById('questionSection');
+        const questionList = document.getElementById('questionList');
+        const resultSummary = document.getElementById('resultSummary');
+        const leaderboardSection = document.getElementById('leaderboardSection');
+        const subjectTitle = document.getElementById('subjectTitle');
+        const emptyState = document.getElementById('emptyState');
+        const quizInfo = document.getElementById('quizInfo');
+        const questionCountLabel = document.getElementById('questionCount');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const submitQuizBtn = document.getElementById('submitQuizBtn');
+        const API_BASE = 'http://localhost:5000/api';
+
+        let currentSubject = null;
+        let currentQuestions = [];
+        let quizTimer = null;
+        let secondsRemaining = 900;
+
+        function renderSubjectCards() {
+            subjectsContainer.innerHTML = '';
+            subjects.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                card.innerHTML = `
+                    <i class="${subject.iconClass}"></i>
+                    <h3>${subject.title}</h3>
+                    <p>${subject.shortDesc}</p>
+                    <small>${subject.count} practice questions</small>
+                `;
+                card.onclick = () => openSubject(subject.id);
+                subjectsContainer.appendChild(card);
+            });
+        }
+
+        function openSubject(subjectId) {
+            const subject = subjects.find(item => item.id === subjectId);
+            const questions = questionBank[subjectId] || [];
+
+            if (!subject) return;
+            currentSubject = subjectId;
+            currentQuestions = questions;
+            secondsRemaining = questions.length * 30;
+            subjectsContainer.style.display = 'none';
+            questionSection.style.display = 'block';
+            emptyState.style.display = 'none';
+            questionList.style.display = 'none';
+            quizInfo.style.display = 'none';
+            startQuizBtn.style.display = 'inline-flex';
+            subjectTitle.innerText = `${subject.title} Practice Questions`;
+            questionCountLabel.innerText = questions.length;
+            timerDisplay.innerText = formatTime(secondsRemaining);
+            questionList.innerHTML = '';
+            if (!questions.length) {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <h3>Coming Soon</h3>
+                    <p>We are preparing ${subject.title} questions for you. Check back soon!</p>
+                `;
+            }
+        }
+
+        function startQuiz() {
+            if (!currentSubject || !currentQuestions.length) return;
+            selectedAnswers.length = 0;
+            selectedAnswers.push(...Array(currentQuestions.length).fill(null));
+            resultSummary.style.display = 'none';
+            resultSummary.innerHTML = '';
+            startQuizBtn.style.display = 'none';
+            submitQuizBtn.style.display = 'inline-flex';
+            quizInfo.style.display = 'flex';
+            questionList.style.display = 'block';
+            renderQuestions(currentSubject, currentQuestions);
+            startTimer();
+        }
+
+        function renderQuestions(subjectId, questions) {
+            questionList.innerHTML = '';
+
+            if (!questions.length) {
+                questionList.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            questionList.style.display = 'block';
+            questions.forEach((question, index) => {
+                const questionObj = typeof question === 'string' ? {
+                    question,
+                    options: [],
+                    answer: null,
+                    explanation: 'Review the core concept and test edge cases for this problem.'
+                } : question;
+                const explanation = questionObj.explanation || 'Review the core concept and test edge cases for this problem.';
+                const optionContent = questionObj.options && questionObj.options.length
+                    ? questionObj.options.map((option, optionIndex) => `
+                        <div class="option-item">
+                            <button type="button" onclick="selectOption(${index}, ${optionIndex})">${option}</button>
+                        </div>
+                    `).join('')
+                    : '<p style="color: var(--text-muted); margin-top: 1rem;">No options available for this question.</p>';
+
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <h4>Question ${index + 1}</h4>
+                    <p>${questionObj.question}</p>
+                    <div id="option-list-${index}" class="option-list">${optionContent}</div>
+                    <button class="explain-btn" type="button" onclick="toggleExplanation(${index})">Show Explanation</button>
+                    <div id="explanation-${index}" class="explanation">${explanation}</div>
+                `;
+                questionList.appendChild(card);
+            });
+        }
+
+        function startTimer() {
+            clearInterval(quizTimer);
+            quizTimer = setInterval(() => {
+                secondsRemaining -= 1;
+                if (secondsRemaining <= 0) {
+                    clearInterval(quizTimer);
+                    timerDisplay.textContent = '00:00';
+                    showTimerComplete();
+                    return;
+                }
+                timerDisplay.textContent = formatTime(secondsRemaining);
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${minutes}:${secs}`;
+        }
+
+        function showTimerComplete() {
+            timerDisplay.textContent = 'Time up';
+            const notice = document.createElement('div');
+            notice.className = 'empty-state';
+            notice.innerHTML = '<h3>Time is up!</h3><p>Your quiz time has ended. Review the explanations and try the next subject.</p>';
+            questionList.appendChild(notice);
+        }
+
+        function toggleExplanation(index) {
+            const explanation = document.getElementById(`explanation-${index}`);
+            if (!explanation) return;
+            explanation.style.display = explanation.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function getLeaderboardData() {
+            const stored = localStorage.getItem('mocktestLeaderboard');
+            try {
+                return stored ? JSON.parse(stored) : [];
+            } catch {
+                return [];
+            }
+        }
+
+        async function fetchLeaderboard() {
+            try {
+                const response = await fetch(`${API_BASE}/leaderboard`);
+                if (!response.ok) {
+                    throw new Error('Failed to load leaderboard from server');
+                }
+                const result = await response.json();
+                return Array.isArray(result.data) ? result.data : [];
+            } catch (error) {
+                console.warn('Leaderboard API unavailable, using local cache.', error);
+                return getLeaderboardData();
+            }
+        }
+
+        async function saveResultToLeaderboard(score, total, subjectId) {
+            const userEmail = localStorage.getItem('userEmail') || 'Guest';
+            const payload = {
+                userEmail,
+                subject: subjectId,
+                score,
+                total
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/leaderboard`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorResult = await response.json().catch(() => null);
+                    throw new Error(errorResult?.message || 'Failed to save leaderboard entry');
+                }
+            } catch (error) {
+                console.warn('Could not save leaderboard entry to server, storing locally instead.', error);
+                const data = getLeaderboardData();
+                data.unshift({
+                    userEmail,
+                    subject: subjectId,
+                    score,
+                    total,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('mocktestLeaderboard', JSON.stringify(data.slice(0, 50)));
+            }
+        }
+
+        async function renderLeaderboard() {
+            if (!leaderboardSection) return;
+            const rows = await fetchLeaderboard();
+            let html = `
+                <h3>Leaderboard</h3>
+                <div class="leaderboard-item" style="font-weight:700; color: var(--text-main);">
+                    <span>User</span>
+                    <span>Subject</span>
+                    <span>Score</span>
+                    <span>Date</span>
+                </div>
+            `;
+            if (!rows.length) {
+                html += '<div class="leaderboard-empty">No leaderboard entries yet. Submit a mock test to add your score.</div>';
+            } else {
+                rows.slice(0, 10).forEach(row => {
+                    const createdAt = row.createdAt || row.date || row.timestamp;
+                    const date = createdAt ? new Date(createdAt).toLocaleString() : 'Unknown';
+                    html += `
+                        <div class="leaderboard-item">
+                            <span>${row.userEmail || 'Guest'}</span>
+                            <span>${row.subject}</span>
+                            <span>${row.score}/${row.total}</span>
+                            <span>${date}</span>
+                        </div>
+                    `;
+                });
+            }
+            leaderboardSection.innerHTML = html;
+        }
+
+        const explanationBank = {
+            'dsa': [
+                'Use a hash map to store visited values and their indices, then find the complement for each element.',
+                'Iterate through the linked list and reverse the next pointers in-place while keeping track of previous and current nodes.',
+                'Use a sliding window and a set to ensure each character in the window is unique while expanding and shrinking the window.',
+                'Use a stack to match opening and closing parentheses and ensure each closing symbol corresponds to the most recent opener.',
+                'Merge the two sorted lists by advancing pointers and building the result list node-by-node.',
+                'Use a fast and slow pointer; if they ever meet then the list contains a cycle.',
+                'Use Kadane’s algorithm: maintain current sum and maximum sum while scanning the array.',
+                'Each step can be 1 or 2, so use dynamic programming with dp[i] = dp[i-1] + dp[i-2].',
+                'Track the minimum price seen so far and calculate profit for each day using current price minus minimum price.',
+                'Use recursion or a stack to traverse the tree in inorder: left, root, right.',
+                'Compare left and right subtrees recursively to ensure mirror symmetry at every node.',
+                'Compute the depth of each subtree recursively and return the larger depth plus one.',
+                'Build each row from the previous row by adding adjacent numbers and padding with 1s at both ends.',
+                'Choose the middle element of the sorted array as the root to keep the BST balanced.',
+                'Use binary search to find the correct index position for insertion in a sorted array.',
+                'Construct product arrays using left/right running products without using division.',
+                'Use binary search on the rotated array to locate the pivot and find the minimum value efficiently.',
+                'Sort the array and use two pointers to find all unique triplets that sum to zero.',
+                'Create a hash map from sorted string signature to groups of anagrams.',
+                'Use a hash map to count frequency and then extract the top k entries using a heap or sort.',
+                'Check each 3x3 sub-box, row, and column for duplicate numbers using sets.',
+                'Perform DFS from each unvisited land cell and mark connected islands so each is counted once.',
+                'Model the course prerequisites as a directed graph and run cycle detection using DFS or Kahn’s algorithm.',
+                'Use dynamic programming on grid cells, adding the minimum of the top and left neighbors to the current cell value.'
+            ],
+            'full-stack': [
+                'A request flows from client to server, the server processes it, queries storage, and returns a response. Monitor state and security during the exchange.',
+                'Design clear resources and endpoints, use REST conventions, and model the data with robust validation.',
+                'Use secure sessions or tokens for auth, then verify authorization per route or role.',
+                'CORS controls which domains can access your API. Use headers and allow only trusted origins.',
+                'Create frontend service calls and backend routes, then wire them together with JSON and error handling.',
+                'Client-side routing updates the UI without server loads; server-side routing handles URLs and returns pages.',
+                'Validate on the client for fast feedback and always repeat validation on the server for security.',
+                'Debounce prevents too many events from firing rapidly by delaying execution until typing stops.',
+                'Use a pipeline with tests, build, and deploy steps so every push becomes an updated app release.',
+                'Keep product, order, and user data normalized and indexed for fast queries.'
+            ],
+            'system-design': [
+                'Use a short URL table, generate unique keys, and scale with caching and analytics services.',
+                'Use pub/sub for real-time delivery, persistent storage, and a scalable message broker.',
+                'Design feeds with ranking, caching, and a write path that can scale for many users.',
+                'Use chunked upload, temporary storage, and load balancers to spread traffic.',
+                'Use distributed crawlers, queue systems, and an indexing pipeline that handles new pages efficiently.',
+                'Use event-driven delivery, retries, and a service to manage notification subscriptions.',
+                'Use read replicas and caching to offload traffic; write to a master node with strong consistency.',
+                'Use a sliding-window or token-bucket algorithm and enforce limits near the API gateway.',
+                'Use a central collaboration service with event sync and conflict resolution.',
+                'Collect metrics at the edge, process them in batches, and display them on dashboards.'
+            ],
+            'aptitude': [
+                'Work rate A = 1/12 and B = 1/18, combined 5/36 per day, so 3 days produce 5/12 and 7/12 remains.',
+                'Differences grow by 4, 6, 8, 10, so next number is 30.',
+                'Solve x/5 = 32/8, so x = 20.',
+                'Average speed = distance/time = 120 / 1.5 = 80 km/h.',
+                'Probability of no rain = 1 - 0.3 = 0.7.',
+                'Simple interest = PRT = 5000*0.08*3 = 1200.',
+                'Diagonals formula n(n-3)/2 = 12*9/2 = 54.',
+                'Solve x+y=10 and x-y=4 to get x=7, y=3.',
+                'Probability = 5/(5+7) = 5/12.',
+                'Compound interest = 1000*(1.1^2 -1) = 210.'
+            ]
+        };
+
+        function showSubjectList() {
+            subjectsContainer.style.display = 'grid';
+            questionSection.style.display = 'none';
+            emptyState.style.display = 'none';
+            questionList.innerHTML = '';
+            resultSummary.style.display = 'none';
+            resultSummary.innerHTML = '';
+            clearInterval(quizTimer);
+            quizTimer = null;
+            quizInfo.style.display = 'none';
+            startQuizBtn.style.display = 'inline-flex';
+            submitQuizBtn.style.display = 'none';
+        }
+
+        function selectOption(questionIndex, choiceIndex) {
+            selectedAnswers[questionIndex] = choiceIndex;
+            const question = currentQuestions[questionIndex];
+            const correctIndex = question.answer;
+            const container = document.getElementById(`option-list-${questionIndex}`);
+            if (!container) return;
+            const buttons = container.querySelectorAll('button');
+            buttons.forEach((button, index) => {
+                button.classList.remove('correct', 'wrong');
+                if (index === correctIndex) {
+                    button.classList.add('correct');
+                }
+                if (index === choiceIndex && choiceIndex !== correctIndex) {
+                    button.classList.add('wrong');
+                }
+            });
+        }
+
+        async function submitQuiz() {
+            if (!currentQuestions.length) return;
+            clearInterval(quizTimer);
+            submitQuizBtn.style.display = 'none';
+            startQuizBtn.style.display = 'inline-flex';
+            quizInfo.style.display = 'none';
+            questionList.style.display = 'none';
+            resultSummary.style.display = 'block';
+            resultSummary.innerHTML = '';
+
+            let score = 0;
+            let total = 0;
+            const summary = document.createElement('div');
+            summary.className = 'result-card';
+
+            currentQuestions.forEach((question, index) => {
+                const hasOptions = question.options && question.options.length;
+                const selected = selectedAnswers[index];
+                const correct = question.answer;
+                const questionSummary = document.createElement('div');
+                questionSummary.className = 'result-card';
+                questionSummary.innerHTML = `
+                    <h3>Question ${index + 1}</h3>
+                    <p>${question.question}</p>
+                `;
+
+                if (hasOptions && correct !== null && correct !== undefined) {
+                    total += 1;
+                    const isCorrect = selected === correct;
+                    if (isCorrect) score += 1;
+                    const resultText = isCorrect
+                        ? 'Correct answer selected.'
+                        : `Incorrect — the correct answer is: <strong>${question.options[correct]}</strong>`;
+                    const resultType = isCorrect ? 'correct' : 'wrong';
+                    const resultAnswer = document.createElement('div');
+                    resultAnswer.className = `result-answer ${resultType}`;
+                    resultAnswer.innerHTML = resultText;
+                    questionSummary.appendChild(resultAnswer);
+
+                    if (selected !== null && selected !== undefined && selected !== correct) {
+                        const chosenAnswer = document.createElement('div');
+                        chosenAnswer.className = 'result-answer wrong';
+                        chosenAnswer.innerHTML = `Your choice: <strong>${question.options[selected] || 'No selection'}</strong>`;
+                        questionSummary.appendChild(chosenAnswer);
+                    }
+                } else {
+                    const info = document.createElement('div');
+                    info.className = 'result-answer';
+                    info.innerHTML = 'This question is not auto-graded because it has no answer choices available.';
+                    questionSummary.appendChild(info);
+                }
+
+                summary.appendChild(questionSummary);
+            });
+
+            const scoreSummary = document.createElement('div');
+            scoreSummary.className = 'result-card';
+            if (total > 0) {
+                scoreSummary.innerHTML = `
+                    <h3>Final Score</h3>
+                    <p>You scored <strong>${score}</strong> out of <strong>${total}</strong>.</p>
+                    <p>${score === total ? 'Great job! All answers are correct.' : 'Review the explanations to improve your score.'}</p>
+                `;
+            } else {
+                scoreSummary.innerHTML = `
+                    <h3>Review Complete</h3>
+                    <p>There are no graded multiple-choice questions available for this subject yet.</p>
+                    <p>Try another subject or check back after more questions are added.</p>
+                `;
+            }
+
+            // save and refresh leaderboard when a quiz is completed
+            if (total > 0) {
+                await saveResultToLeaderboard(score, total, currentSubject);
+                await renderLeaderboard();
+            }
+            resultSummary.appendChild(scoreSummary);
+            resultSummary.appendChild(summary);
+        }
+
+        const selectedAnswers = [];
+
+        function updateAuthNav() {
+            const authNavItem = document.getElementById('authNavItem');
+            if (!authNavItem) return;
+            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+            if (isAuthenticated) {
+                authNavItem.innerHTML = '<a href="#" id="logoutLink">Logout</a>';
+                const logoutLink = document.getElementById('logoutLink');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        localStorage.removeItem('isAuthenticated');
+                        localStorage.removeItem('userEmail');
+                        window.location.href = 'login.html';
+                    });
+                }
+            } else {
+                authNavItem.innerHTML = '<a href="login.html">Login</a>';
+            }
+        }
+
+        renderSubjectCards();
+        updateAuthNav();
+        renderLeaderboard();
+    </script>
+</body>
+</html>

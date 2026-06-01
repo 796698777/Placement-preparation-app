@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Details - Placement Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --panel-bg: rgba(248, 250, 252, 0.9);
+            --accent-primary: #f9a8d4;
+            --accent-secondary: #60a5fa;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: rgba(96, 165, 250, 0.22);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, rgba(249, 168, 212, 0.35), transparent 22%),
+                        radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.28), transparent 22%),
+                        linear-gradient(135deg, #f8fafc 0%, #eff6ff 40%, #fdf2f8 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.18);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-container {
+            max-width: 900px;
+            margin: 100px auto 0 auto;
+            padding: 2rem;
+        }
+
+        .profile { position: relative; display:inline-flex; align-items:center; }
+        .profile-btn { background: transparent; border:none; font-size:1.4rem; color:var(--text-muted); cursor:pointer; }
+        .profile-menu { position:absolute; right:0; top:3.6rem; background:var(--card-bg); border:1px solid var(--border); padding:0.6rem; border-radius:10px; min-width:220px; display:none; z-index:200; }
+        .profile-menu.open { display:block; }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        .detail-icon {
+            font-size: 4rem;
+            color: var(--accent-primary);
+        }
+        
+        .detail-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+        
+        .detail-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .detail-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 40px rgba(96, 165, 250, 0.1);
+        }
+        
+        .detail-content h2 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-content p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .question-box {
+            background: var(--panel-bg);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .question-box h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        summary {
+            color: var(--accent-primary);
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            outline: none;
+        }
+
+        pre {
+            background: #0b0f19;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-item {
+            background: rgba(56, 189, 248, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: gap 0.3s;
+        }
+        
+        .back-link:hover {
+            gap: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: #0f172a;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i> PlacementPrep
+        </div>
+        <div class="profile" id="profileContainer">
+            <button id="profileBtn" class="profile-btn" title="Profile"><i class="fa-solid fa-user-circle"></i></button>
+            <div id="profileMenu" class="profile-menu" aria-hidden="true">
+                <div class="profile-info">Signed in as<br><strong id="profileEmail">Guest</strong></div>
+                <div class="profile-actions">
+                    <a href="index.html">Dashboard</a>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="detail-container" id="detailContent">
+        <div class="loading">
+            <p>🔄 Loading module details...</p>
+        </div>
+    </div>
+    
+
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        async function loadModuleDetail() {
+            const params = new URLSearchParams(window.location.search);
+            const moduleId = params.get('id');
+            
+            if (!moduleId) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/modules`);
+                const modules = await response.json();
+                const module = modules.find(m => m.id === moduleId);
+                
+                if (!module) {
+                    throw new Error('Module track registration not found inside Atlas Cloud database.');
+                }
+                
+                renderDetail(module);
+                await trackClick(moduleId);
+            } catch (error) {
+                console.error('❌ Error loading module:', error);
+                document.getElementById('detailContent').innerHTML = `
+                    <div class="error">
+                        <h1>❌ Module not found</h1>
+                        <p>${error.message}</p>
+                        <br>
+                        <a href="index.html" style="color: var(--accent-primary); text-decoration: underline;">← Back to Modules</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Profile menu setup
+        function setupProfileMenu() {
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const profileEmail = document.getElementById('profileEmail');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+            const email = localStorage.getItem('userEmail') || 'Guest';
+
+            if (profileEmail) profileEmail.textContent = email;
+            if (!isAuth && profileBtn) profileBtn.style.display = 'none';
+
+            profileBtn?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = profileMenu.classList.toggle('open');
+                profileMenu.setAttribute('aria-hidden', !open);
+            });
+
+            document.addEventListener('click', () => profileMenu?.classList.remove('open'));
+
+            logoutBtn?.addEventListener('click', () => {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'login.html';
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { setupProfileMenu(); loadModuleDetail(); });
+
+        function renderDetail(module) {
+            const createdDate = module.createdAt ? new Date(module.createdAt).toLocaleDateString() : 'Active';
+            
+            // Build dynamic conditional context structures safely before injections
+            let explicitModuleContent = '';
+
+            // CONDITION A: Render extensive coding metrics if DSA clicked
+            if (module.id === 'dsa') {
+                explicitModuleContent = `
+                    <div class="detail-content">
+                        <h2><i class="fa-solid fa-code-branch"></i> Top Interview Coding Questions</h2>
+                        
+                        <div class="question-box">
+                            <h3>1. Two Sum Problem (Arrays & Hashing)</h3>
+                            <p><strong>Problem:</strong> Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.</p>
+                            <details>
+                                <summary>View Optimal JS Solution</summary>
+                                <pre><code>function twoSum(nums, target) {
+    const map = new Map(); // Stores values and their index
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        map.set(nums[i], i);
+    }
+    return [];
+}
+// Time Complexity: O(n) - Single pass
+// Space Complexity: O(n) - Map allocation</code></pre>
+                            </details>
+                        </div>
+
+                        <div class="question-box">
+                            <h3>2. Reverse a Linked List (Pointers)</h3>
+                            <p><strong>Problem:</strong> Given the head of a singly linked list, reverse the list, and return its reversed variant head pointer.</p>
+                            <details>
+                                <summary>View Optimal JS Solution</summary>
+                                <pre><code>function reverseList(head) {
+    let prev = null;
+    let current = head;
+    while (current !== null) {
+        let nextNode = current.next; // save reference
+        current.next = prev;         // reverse pointer
+        prev = current;              // move prev forward
+        current = nextNode;          // move current forward
+    }
+    return prev;
+}
+// Time Complexity: O(n)
+// Space Complexity: O(1) in-place swap</code></pre>
+                            </details>
+                        </div>
+
+                        <div class="question-box">
+                            <h3>3. Longest Substring Without Repeating Characters (Sliding Window)</h3>
+                            <p><strong>Problem:</strong> Find the length of the longest substring within a given string mapping without repeating values.</p>
+                            <details>
+                                <summary>View Optimal JS Solution</summary>
+                                <pre><code>function lengthOfLongestSubstring(s) {
+    let set = new Set();
+    let left = 0, maxLen = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        while (set.has(s[right])) {
+            set.delete(s[left]);
+            left++;
+        }
+        set.add(s[right]);
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}
+// Time Complexity: O(n)
+// Space Complexity: O(min(m, n))</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;
+            } 
+            
+            // CONDITION B: Render quantitative assessment metrics if Mock/Aptitude track clicked
+            else if (module.id === 'aptitude' || module.id === 'mock-tests') {
+                explicitModuleContent = `
+                    <div class="detail-content">
+                        <h2><i class="fa-solid fa-clock"></i> Live Analytical Assessment Mock Questions</h2>
+                        
+                        <div class="question-box">
+                            <h3>1. Quantitative Aptitude: Time & Work</h3>
+                            <p><strong>Question:</strong> Worker A can finish a task in 12 days. Worker B can finish the same task in 18 days. If they work together for 3 days, what fractional part of the total task remains incomplete?</p>
+                            <details>
+                                <summary>View Step-by-Step Derivation</summary>
+                                <pre><code>Step 1: Compute 1-day capacity metrics
+A's rate = 1/12 per day, B's rate = 1/18 per day
+Combined daily progress rate = (1/12) + (1/18) = 5/36
+
+Step 2: Accumulate work done over 3 days
+Work complete = 3 * (5/36) = 15/36 = 5/12
+
+Step 3: Evaluate remaining work
+Remaining fractional balance = 1 - (5/12) = 7/12
+
+👉 Correct Answer: 7/12 of the work remains.</code></pre>
+                            </details>
+                        </div>
+
+                        <div class="question-box">
+                            <h3>2. Logical Reasoning: Data Sufficiency</h3>
+                            <p><strong>Question:</strong> What is the absolute sequence order position of point X relative to point Y? 
+                            <br><em>Statement I:</em> Point X is 5 meters north of Z. 
+                            <br><em>Statement II:</em> Point Y is 5 meters east of Z.</p>
+                            <details>
+                                <summary>View Logic Mapping</summary>
+                                <pre><code>Analysis:
+- From Statement I alone: We know X's coordinate relative to Z, but nothing about Y. (Insufficent)
+- From Statement II alone: We know Y's coordinate relative to Z, but nothing about X. (Insufficient)
+- Combining both statements: We map a right-triangle plane layout where X is North of Z, and Y is East of Z. 
+
+Using Pythagorean metrics, we can precisely calculate that X is North-West of Y.
+👉 Verdict: BOTH Statements I and II together are necessary to answer.</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Inject the constructed document body safely
+            document.getElementById('detailContent').innerHTML = `
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
+                
+                <div class="detail-header">
+                    <div class="detail-icon">
+                        <i class="${module.iconClass}"></i>
+                    </div>
+                    <div class="detail-title">
+                        <h1>${module.title}</h1>
+                        <p>${module.shortDesc}</p>
+                    </div>
+                </div>
+                
+                <div class="detail-content">
+                    <h2><i class="fa-solid fa-book-open"></i> Curriculum Overview</h2>
+                    <p>${module.longDesc}</p>
+                </div>
+                
+                ${explicitModuleContent}
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">${module.metaText}</div>
+                        <div class="stat-label">Milestone Content</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${module.clicks || 0}</div>
+                        <div class="stat-label">👥 Profile Views</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${createdDate}</div>
+                        <div class="stat-label">System Active Status</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="startModule('${module.id}', '${module.title}')">
+                        <i class="fa-solid fa-play"></i> Launch Practice Simulator
+                    </button>
+                    <a href="index.html" class="btn btn-secondary" style="text-decoration: none; text-align: center;">
+                        <i class="fa-solid fa-rotate-left"></i> Return Home
+                    </a>
+                </div>
+            `;
+
+            document.title = module.title + ' - Placement Prep';
+        }
+
+        async function trackClick(moduleId) {
+            try {
+                const response = await fetch(`${API_BASE}/modules/${moduleId}/click`, { method: 'POST' });
+                if (response.ok) {
+                    showToast('Click stored in backend!');
+                }
+            } catch (error) {
+                console.error('❌ Tracking error:', error);
+            }
+        }
+
+        function showToast(message, duration = 2200) {
+            let toast = document.getElementById('detailToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'detailToast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.right = '20px';
+                toast.style.padding = '14px 20px';
+                toast.style.borderRadius = '10px';
+                toast.style.background = 'rgba(15, 23, 42, 0.95)';
+                toast.style.color = '#e2e8f0';
+                toast.style.fontSize = '0.95rem';
+                toast.style.boxShadow = '0 18px 30px rgba(15, 23, 42, 0.25)';
+                toast.style.zIndex = '9999';
+                toast.style.maxWidth = '320px';
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                toast.style.transform = 'translateY(10px)';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            clearTimeout(toast.dismissTimer);
+            toast.dismissTimer = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+            }, duration);
+        }
+
+        function startModule(moduleId, title) {
+            alert(`🎯 Sandbox Active!\n\nLaunching: "${title}" workspace.\nModule Index Key: ${moduleId}`);
+        }
+
+        window.addEventListener('DOMContentLoaded', loadModuleDetail);
+    </script>
+</body>
+</html>

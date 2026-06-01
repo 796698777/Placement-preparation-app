@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Preparation App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i> PlacementPrep
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" id="dashboardLink" class="active">Dashboard</a></li>
+            <li><a href="#">Tracks</a></li>
+            <li><a href="mocktest.html">Mock Tests</a></li>
+            <li><a href="#">Leaderboard</a></li>
+        </ul>
+        <div class="profile" id="profileContainer">
+            <button id="profileBtn" class="profile-btn" title="Profile"><i class="fa-solid fa-user-circle"></i></button>
+            <div id="profileMenu" class="profile-menu" aria-hidden="true">
+                <div class="profile-info">Signed in as<br><strong id="profileEmail">Guest</strong></div>
+                <div class="profile-actions">
+                    <a href="index.html">Dashboard</a>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Master Your <span>Placement Preparation</span></h1>
+        <p>Your structured path to cracking top tech interviews. Choose a module below to jump right in.</p>
+        <div id="loginDetails" class="login-details" style="display:none;"></div>
+    </section>
+
+    <main class="container">
+        <div class="grid" id="modulesGrid">
+            <!-- Modules will be loaded here by app.js -->
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        function setupProfile() {
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const profileEmail = document.getElementById('profileEmail');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+            const email = localStorage.getItem('userEmail') || 'Guest';
+
+            profileEmail.textContent = email;
+            if (!isAuth) { profileBtn.style.display = 'none'; }
+
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = profileMenu.classList.toggle('open');
+                profileMenu.setAttribute('aria-hidden', !open);
+            });
+
+            document.addEventListener('click', () => profileMenu.classList.remove('open'));
+
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'login.html';
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', setupProfile);
+    </script>
+</body>
+</html>
