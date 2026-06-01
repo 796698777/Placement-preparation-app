@@ -349,20 +349,16 @@
                             <h3>1. Two Sum Problem (Arrays & Hashing)</h3>
                             <p><strong>Problem:</strong> Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.</p>
                             <details>
-                                <summary>View Optimal JS Solution</summary>
-                                <pre><code>function twoSum(nums, target) {
-    const map = new Map(); // Stores values and their index
-    for (let i = 0; i < nums.length; i++) {
-        const complement = target - nums[i];
-        if (map.has(complement)) {
-            return [map.get(complement), i];
-        }
-        map.set(nums[i], i);
-    }
-    return [];
-}
-// Time Complexity: O(n) - Single pass
-// Space Complexity: O(n) - Map allocation</code></pre>
+                                <summary>View Optimal Python Solution</summary>
+                                <pre><code>def two_sum(nums, target):
+    seen = {}
+    for i, num in enumerate(nums):
+        comp = target - num
+        if comp in seen:
+            return [seen[comp], i]
+        seen[num] = i
+    return []
+# Time: O(n), Space: O(n)</code></pre>
                             </details>
                         </div>
 
@@ -370,20 +366,17 @@
                             <h3>2. Reverse a Linked List (Pointers)</h3>
                             <p><strong>Problem:</strong> Given the head of a singly linked list, reverse the list, and return its reversed variant head pointer.</p>
                             <details>
-                                <summary>View Optimal JS Solution</summary>
-                                <pre><code>function reverseList(head) {
-    let prev = null;
-    let current = head;
-    while (current !== null) {
-        let nextNode = current.next; // save reference
-        current.next = prev;         // reverse pointer
-        prev = current;              // move prev forward
-        current = nextNode;          // move current forward
-    }
-    return prev;
-}
-// Time Complexity: O(n)
-// Space Complexity: O(1) in-place swap</code></pre>
+                                <summary>View Optimal Python Solution</summary>
+                                <pre><code>def reverse_list(head):
+    prev = None
+    current = head
+    while current is not None:
+        next_node = current.next
+        current.next = prev
+        prev = current
+        current = next_node
+    return prev
+# Time: O(n), Space: O(1)</code></pre>
                             </details>
                         </div>
 
@@ -391,23 +384,19 @@
                             <h3>3. Longest Substring Without Repeating Characters (Sliding Window)</h3>
                             <p><strong>Problem:</strong> Find the length of the longest substring within a given string mapping without repeating values.</p>
                             <details>
-                                <summary>View Optimal JS Solution</summary>
-                                <pre><code>function lengthOfLongestSubstring(s) {
-    let set = new Set();
-    let left = 0, maxLen = 0;
-    
-    for (let right = 0; right < s.length; right++) {
-        while (set.has(s[right])) {
-            set.delete(s[left]);
-            left++;
-        }
-        set.add(s[right]);
-        maxLen = Math.max(maxLen, right - left + 1);
-    }
-    return maxLen;
-}
-// Time Complexity: O(n)
-// Space Complexity: O(min(m, n))</code></pre>
+                                <summary>View Optimal Python Solution</summary>
+                                <pre><code>def length_of_longest_substring(s):
+    chars = set()
+    left = 0
+    max_len = 0
+    for right, ch in enumerate(s):
+        while ch in chars:
+            chars.remove(s[left])
+            left += 1
+        chars.add(ch)
+        max_len = max(max_len, right - left + 1)
+    return max_len
+# Time: O(n), Space: O(min(m,n))</code></pre>
                             </details>
                         </div>
                     </div>
