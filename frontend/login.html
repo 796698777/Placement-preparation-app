@@ -170,9 +170,10 @@
                     alertBox.style.display = 'block';
                     setTimeout(() => switchMode('login'), 2000);
                 } else {
-                    // Save session token verification locally and advance to home dashboard
+                    // Save JWT token and email, then redirect to dashboard
                     localStorage.setItem('isAuthenticated', 'true');
                     localStorage.setItem('userEmail', email);
+                    localStorage.setItem('accessToken', data.access_token);
                     window.location.href = 'index.html';
                 }
 

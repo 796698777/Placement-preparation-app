@@ -1,6 +1,18 @@
 // API Configuration
 const API_BASE = 'http://localhost:5000/api';
 
+// Helper function to get JWT headers
+function getAuthHeaders() {
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+}
+
 // DOM Elements
 let modulesContainer = null;
 let backendStatus = null;
@@ -169,9 +181,7 @@ async function trackModuleClick(moduleId) {
         console.log(`📊 Tracking click for module: ${moduleId}`);
         const response = await fetch(`${API_BASE}/modules/${moduleId}/click`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: getAuthHeaders()
         });
         
         const result = await response.json();
@@ -223,9 +233,7 @@ async function seedDatabase() {
         console.log('🌱 Seeding database...');
         const response = await fetch(`${API_BASE}/modules/seed`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: getAuthHeaders()
         });
         
         const result = await response.json();
